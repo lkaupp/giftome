@@ -25,16 +25,30 @@ $('#uncrypt').click(() => {
         // Document loaded, retrieving the page.
         return pdfDocument.getPage(1).then(function (pdfPage) {
             // Creating the page view with default parameters.
+
+
+
+
+                var viewport = pdfPage.getViewport({scale:1});
+
+                 const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+                 const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+                 const factor=vw < vh ? vw : vh;
+
+                var scale = (factor * 0.65) / viewport.width;
+                viewport = pdfPage.getViewport(scale);
+
             var pdfPageView = new pdfjsViewer.PDFPageView({
                 container: container,
                 id: 1,
-                scale: 1.0,
-                defaultViewport: pdfPage.getViewport({scale: 1.0}),
+                scale: scale,
+                defaultViewport: viewport,
                 eventBus: eventBus,
                 // We can enable text/annotations layers, if needed
-                textLayerFactory: new pdfjsViewer.DefaultTextLayerFactory(),
-                annotationLayerFactory: new pdfjsViewer.DefaultAnnotationLayerFactory(),
+                //textLayerFactory: new pdfjsViewer.DefaultTextLayerFactory(),
+                //annotationLayerFactory: new pdfjsViewer.DefaultAnnotationLayerFactory(),
             });
+
             // Associates the actual page with the view, and drawing it
             pdfPageView.setPdfPage(pdfPage);
             $('#pageContainer').show();
@@ -49,4 +63,6 @@ $('#pageContainer').click(()=>{
         pdfDoc.destroy();
     $('#pageContainer').hide();
     $('#pageContainer').empty();
+
+
 });
