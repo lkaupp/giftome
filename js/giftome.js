@@ -6,8 +6,8 @@ $.ajax({
     url : "/doc/mappings.json",
     dataType: "json",
     success : function (mapping) {
-        $('#to').text(mapping[searchParams.get('token')][0]);
-        $('#from').text(mapping[searchParams.get('token')][1]);
+        $('#to').text(mapping[searchParams.get('token')][1]);
+        $('#from').text(mapping[searchParams.get('token')][0]);
     }
 });
 
