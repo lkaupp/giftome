@@ -1,7 +1,17 @@
+
 let searchParams = new URLSearchParams(window.location.search)
 let pdfDoc = undefined;
-$('#to').text(searchParams.get('to'));
-$('#from').text(searchParams.get('from'));
+
+$.ajax({
+    url : "/doc/mappings.json",
+    dataType: "json",
+    success : function (mapping) {
+        $('#to').text(mapping[searchParams.get('token')][0]);
+        $('#from').text(mapping[searchParams.get('token')][1]);
+    }
+});
+
+
 $('#pageContainer').hide();
 
 if (!pdfjsLib.getDocument || !pdfjsViewer.PDFPageView) {
@@ -15,7 +25,7 @@ pdfjsLib.GlobalWorkerOptions.workerSrc =
 
 $('#uncrypt').click(() => {
     var loadingTask = pdfjsLib.getDocument({
-        url: '/doc/ozumli.pdf',
+        url: '/doc/'+searchParams.get('token')+'.pdf',
         password: $('#pw').val(),
     });
     var container = document.getElementById("pageContainer");
